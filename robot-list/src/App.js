@@ -6,22 +6,20 @@ const initialString = {
 
 function App() {
 	const [string, setString] = useState(initialString);
-	const [list, setList] = useState(false);
+	const [list, setList] = useState([]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		setList(true);
+		setList([...list, string]);
 	};
 
-	const update = (e) => {
-		e.preventDefault();
-		setString({
-			stringInput: e.target.value,
-		});
-    setString(initialString)
-	};
+  const update = (e) => {
+    e.preventDefault();
+    setString({
+      ...string,
+      [e.target.name]: e.target.value
+    })};
 
-	const url = `https://robohash.org/${string}`;
 
 	return (
 		<div className="App">
@@ -35,13 +33,18 @@ function App() {
 				/>
 				<button type="submit">Get Robot</button>
 			</form>
-			{list && (
+			{list.length > 0 && (
 				<>
 					<h1>Robot Collection</h1>
 					<ul>
-						<li>
-							<img src={url} alt={string.stringInput.value} />
-						</li>
+            {list.map(item =>{
+              return(
+                <li>
+                  <img src={`https://robohash.org/${item}`} alt={item} />
+                </li>
+
+              )
+            })}
 					</ul>
 				</>
 			)}
