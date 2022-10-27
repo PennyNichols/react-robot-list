@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+
+const initialString = {
+	stringInput: "",
+};
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [string, setString] = useState(initialString);
+	const [list, setList] = useState(false);
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		setList(true);
+	};
+
+	const update = (e) => {
+		e.preventDefault();
+		setString({
+			stringInput: e.target.value,
+		});
+    setString(initialString)
+	};
+
+	const url = `https://robohash.org/${string}`;
+
+	return (
+		<div className="App">
+			<form onSubmit={handleSubmit}>
+				<input
+					name="stringInput"
+					placeholder="Enter any word"
+					type="text"
+          value={string.stringInput.value}
+					onChange={update}
+				/>
+				<button type="submit">Get Robot</button>
+			</form>
+			{list && (
+				<>
+					<h1>Robot Collection</h1>
+					<ul>
+						<li>
+							<img src={url} alt={string.stringInput.value} />
+						</li>
+					</ul>
+				</>
+			)}
+		</div>
+	);
 }
 
 export default App;
